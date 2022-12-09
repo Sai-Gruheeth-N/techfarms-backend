@@ -3,10 +3,7 @@ from werkzeug.utils import secure_filename
 
 import numpy as np
 import tensorflow as tf
-<<<<<<< HEAD
 # import pickle
-=======
->>>>>>> parent of 57622a2 (added pickle module for model loading)
 from tensorflow.keras.models import load_model
 from tensorflow.keras.preprocessing import image
 
@@ -61,14 +58,13 @@ def predict(fileName):
     # print('in pred func')
     print('\nPredict parameter : ' + fileName)
 
-    response = requests.get('{}/{}'.format(os.environ["hostURL"],fileName))
+    response = requests.get('{s1}/{s2}'.format(s1=os.environ["hostURL"],s2=fileName))
     img = Image.open(BytesIO(response.content))
-    resized_img = img.resize((256, 256), Image.ANTIALIAS)
     print('Retrieved image from S3')
 
     # s3 = boto3.client(
     #     's3',
-    #     region_name = 'us-west-1',
+    ##    region_name = 'us-west-1',
     #     aws_access_key_id = os.environ.get("AWS_ACCESS_KEY_ID"),
     #     aws_secret_access_key = os.environ.get("AWS_SECRET_ACCESS_KEY"),
     # )
@@ -78,17 +74,16 @@ def predict(fileName):
     # sample_file = Image.open(BytesIO(image_data))
     
 
-    sample_file = resized_img
+    sample_file = img
     # sample_img = image.load_img(sample_file,target_size = (256,256,3))
     sample_img = image.img_to_array(sample_file)
     sample_img = np.expand_dims(sample_img,axis=0)
 
-<<<<<<< HEAD
 
-    model = load_model('fridayModel.h5')
+    # model = load_model('\\fridayModel.h5')
     # file = h5py.File('C:\\Users\\gruhe\\Desktop\\backend\\capstone-backend\\fridayModel.h5','r')
-    # file = h5py.File('/home/ubuntu/fridayModel.h5','r')
-    # model = load_model(file,compile=False)
+    file = h5py.File('/home/ubuntu/fridayModel.h5','r')
+    model = load_model(file,compile=False)
 
     # with open('model_pkl' , 'rb') as f:
     #     lr = pickle.load(f)
@@ -96,10 +91,6 @@ def predict(fileName):
     prediction_arr = model.predict(sample_img)
     # f.close()
     # prediction_arr = lr.predict(sample_img)
-=======
-    model = load_model('fridayModel.h5')
-    prediction_arr = model.predict(sample_img)
->>>>>>> parent of 57622a2 (added pickle module for model loading)
     result = {
         'Sample' : str(fileName),
         'Label' : str(class_names[prediction_arr.argmax()]),
