@@ -61,17 +61,6 @@ def predict(fileName):
     response = requests.get('{s1}/{s2}'.format(s1=os.environ["hostURL"],s2=fileName))
     img = Image.open(BytesIO(response.content))
     print('Retrieved image from S3')
-
-    # s3 = boto3.client(
-    #     's3',
-    ##    region_name = 'us-west-1',
-    #     aws_access_key_id = os.environ.get("AWS_ACCESS_KEY_ID"),
-    #     aws_secret_access_key = os.environ.get("AWS_SECRET_ACCESS_KEY"),
-    # )
-    # bucket = s3.Bucket(os.environ.get('BUCKET_NAME'))
-    # image = bucket.Object(fileName)
-    # image_data = image.get().get('Body').read()
-    # sample_file = Image.open(BytesIO(image_data))
     
 
     sample_file = img
